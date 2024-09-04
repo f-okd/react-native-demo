@@ -1,24 +1,17 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
+import SignInForm from '@/components/SignInForm';
 import { Href, Link, useRouter } from 'expo-router';
-import { useAuthStore } from '../../store/authStore';
-import Auth from '@/components/Auth';
+import React from 'react';
+import { Text, View } from 'react-native';
+import useAuthStore from '../../store/authStore';
 
 export default function Login() {
-  const signIn = useAuthStore((state) => state.signIn);
-  const router = useRouter();
-
-  const handleLogin = () => {
-    signIn();
-    router.replace('/home');
-  };
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Login Screen</Text>
-      <Button title="Login" onPress={handleLogin} />
-      <Link href={"/signup" as Href}>Go to Signup</Link>
-      <Auth/>
+      <Text className='bg-blue-200'>LOGIN SCREEN</Text>
+      <Link href={"/profile" as Href}>Go to Profile</Link>
+      <SignInForm />
+      <Link href={"/register" as Href}>No Account? Sign up here</Link>
     </View>
   );
 }
