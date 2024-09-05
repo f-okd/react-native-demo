@@ -1,6 +1,7 @@
 # React-Native Demo
 
-Experimenting with react-native + zustand for global state management
+Experimenting with react-native, supabase-auth and zustand. Mostly getting to grips with expo router + layouts. 
+It also makes for a good boilerplate project.
 
 ## Prerequisites
 
