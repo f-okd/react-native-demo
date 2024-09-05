@@ -1,57 +1,99 @@
-import { ICredentials, supabaseLogin, supabaseLogout, supabaseSignUp, supabaseGetCurrentUser, supabaseUpdateCurrentUser } from '@/lib/supabase/apiAuth';
-import { User, Session, WeakPassword } from '@supabase/supabase-js';
+import {
+  ICredentials,
+  supabaseGetCurrentUser,
+  supabaseSignUp,
+  supabaseUpdateCurrentUser,
+} from '@/lib/supabase/apiAuth';
+import { supabase } from '@/lib/supabase/supabase';
+import { Session, User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 
 type AuthState = {
   user: User | null;
   session: Session | null;
   loading: boolean;
-}
+};
 
 type AuthActions = {
   signIn: ({ email, password }: ICredentials) => void;
   signOut: () => Promise<void>;
-  signUp: ({ username, email, password }: ICredentials) => Promise<{
-    user: User | null;
-    session: Session | null;
-  }>;
-  getCurrentUser: () => Promise<User | null>;
-  updateCurrentUser: ({ password, username }: { password?: string; username?: string }) => Promise<User>;
-}
+  signUp: ({ username, email, password }: ICredentials) => Promise<void>;
+  updateCurrentUser: ({
+    password,
+    username,
+  }: {
+    password?: string;
+    username?: string;
+  }) => Promise<void>;
+};
 
-const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
+const useAuthStore = create<AuthState & AuthActions>((set) => ({
   user: null,
   session: null,
   loading: false,
-  setUser: (user:User) => set({ user }),
+  setUser: (user: User) => set({ user }),
   signIn: async ({ email, password }) => {
     set({ loading: true });
-    const { user, session } = await supabaseLogin({ email, password });
+    const {
+      data: { user, session },
+      error,
+    } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.warn('Incorrect credentials');
+      set({ loading: false });
+      return;
+    }
+
     set({ user, session, loading: false });
   },
   signOut: async () => {
     set({ loading: true });
-    await supabaseLogout();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.warn(error.message);
+    }
     set({ user: null, session: null, loading: false });
   },
   signUp: async ({ username, email, password }) => {
     set({ loading: true });
-    const { user, session } = await supabaseSignUp({ username, email, password });
+    const {
+      data: { user, session },
+      error,
+    } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username,
+        },
+      },
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
     set({ user, session, loading: false });
-    return { user, session };
   },
-  getCurrentUser: async () => {
-    set({ loading: true });
-    const user = await supabaseGetCurrentUser();
-    set({ user, loading: false });
-    return user;
-  },
+  // Either update password or username, not both
   updateCurrentUser: async ({ password, username }) => {
     set({ loading: true });
-    const { user: updatedUser } = await supabaseUpdateCurrentUser({ password, username });
-    set({ user: updatedUser, loading: false });
-    return updatedUser;
+
+    let updateData;
+    if (password) {
+      updateData = { password };
+    } else {
+      updateData = { data: { username } };
+    }
+
+    const { data: {user}, error } = await supabase.auth.updateUser(updateData);
+    if (error) throw new Error(error.message);
+
+    set({ user, loading: false });
   },
 }));
 
-export default useAuthStore
+export default useAuthStore;

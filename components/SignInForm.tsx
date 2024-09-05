@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Alert, StyleSheet, View, AppState } from 'react-native';
-import { supabase } from '../lib/supabase/supabase';
-import { Button, Input } from '@rneui/themed';
-import { Redirect, router } from 'expo-router';
 import useAuthStore from '@/store/authStore';
+import { Button, Input } from '@rneui/themed';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import validator from 'validator';
 
 export default function SignInForm() {
   const [email, setEmail] = useState<string>('oluwafayefunmiokude@gmail.com');
@@ -12,6 +12,10 @@ export default function SignInForm() {
   const { signIn, loading } = useAuthStore();
 
   const handleLogin = () => {
+    if (!validator.isEmail(email)) {
+      console.warn('Enter a valid email');
+      return;
+    }
     signIn({ email, password });
     router.replace('/home');
   };

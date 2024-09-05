@@ -6,19 +6,6 @@ export interface ICredentials {
   password: string;
 }
 
-export const supabaseLogin = async ({ email, password }: ICredentials) => {
-  // will also store user + session data in local storage
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  console.log("CODE REACHED")
-
-  if (error) {throw new Error(error.message); console.warn(error?.message)}
-
-  return data;
-};
-
 export const supabaseGetCurrentUser = async () => {
   // retrieve active session from local storage
   const { data: session } = await supabase.auth.getSession();
@@ -42,7 +29,7 @@ export const supabaseSignUp = async ({ username, email, password }: ICredentials
     password,
     options: {
       data: {
-        username, //accessible in user.user_metadata
+        username, 
       },
     },
   });
@@ -64,8 +51,10 @@ export const supabaseUpdateCurrentUser = async ({
   let updateData;
   if (password) {
     updateData = { password };
-  } else {
+  } else if(username) {
     updateData = { data: { username } };
+  } else {
+    return
   }
 
   const { data, error } = await supabase.auth.updateUser(updateData);

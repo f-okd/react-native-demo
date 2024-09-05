@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Alert, StyleSheet, View, AppState } from 'react-native';
-import { supabase } from '../lib/supabase/supabase';
-import { Button, Input } from '@rneui/themed';
-import { Redirect, router } from 'expo-router';
 import useAuthStore from '@/store/authStore';
+import { Button, Input } from '@rneui/themed';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import validator from 'validator';
 
 export default function RegistrationForm() {
   const [username, setUsername] = useState<string>('');
@@ -13,6 +13,18 @@ export default function RegistrationForm() {
   const {signUp, loading} = useAuthStore()
 
   async function handleSignUp() {
+    if (!validator.isEmail(email)) {
+      console.warn("Invalid email")
+      return
+    }
+    if (!validator.isLength(username, {min:5, max:12})) {
+      console.warn("Username must be 5-12 characters long")
+      return
+    }
+    if (!validator.isLength(password, {min:6, max:20})) {
+      console.warn("Password must be 6-20 characters long")
+      return
+    }
     await signUp({username,email,password});
 
     router.replace('/home');
@@ -20,6 +32,16 @@ export default function RegistrationForm() {
 
   return (
     <View style={styles.container}>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Input
+          label="Username"
+          leftIcon={{ type: 'font-awesome', name: 'user' }}
+          onChangeText={(text: string) => setUsername(text)}
+          value={username}
+          placeholder="TheLegend27"
+          autoCapitalize={'none'}
+        />
+      </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Email"

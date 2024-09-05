@@ -5,13 +5,12 @@ import { Text } from "react-native";
 
 export default function Layout() {
   const router = useRouter()
-  const User = useUser()
   const {session} = useAuthStore()
  
-  // if (!User) {
-  //   router.replace("/login")
-  //   console.warn("NOT AUTHENTICATED")
-  // }
+  if (!session?.user) {
+    router.replace("/login")
+    console.warn("NOT AUTHENTICATED")
+  }
   
   return (
     <>
