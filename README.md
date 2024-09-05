@@ -1,20 +1,40 @@
-# Welcome to your Expo app 👋
+# React-Native Demo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Experimenting with react-native + zustand for global state management
 
-## Get started
+## Prerequisites
 
-1. Install dependencies
+You need Node, JDK and Android Studio to use an emulator. 
+Follow these instructions: [React Native | Setup Environment](https://reactnative.dev/docs/set-up-your-environment)
+
+## How to run
+
+1. Clone the repository to your local machine:
+
+   ```bash
+   git clone https://github.com/f-okd/book-tracker
+   ```
+2. Navigate to the project directory:
+
+   ```bash
+   cd C:\...\book-tracker
+   ```
+
+3. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+4. Rename .env.example to .env/.env.local and populate env variables
+   - This step can be skipped and you can write the URL and Key directly into your codebase because you should have supabase Row-Level-Security enabled, but it's good secure practice to keep somewhat sensitive data private.
+
+5. Start the app
 
    ```bash
-    npx expo start
+    npm start
    ```
+6. Press 'a' key to open using android emulator, or scan the QR code on the Expo Go app (Android)
 
 In the output, you'll find options to open the app in a
 
@@ -22,6 +42,8 @@ In the output, you'll find options to open the app in a
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+If you're using Expo-Go like I am, make sure your mobile device and PC are on the same network.
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
@@ -33,18 +55,7 @@ When you're ready, run:
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Helpful resources
+https://supabase.com/docs/guides/auth/social-login/auth-google?queryGroups=platform&platform=react-native
+https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native?queryGroups=auth-store&auth-store=async-storage

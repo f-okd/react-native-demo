@@ -1,22 +1,19 @@
+import SignInForm from '@/components/SignInForm';
+import { Href, Link, useRouter } from 'expo-router';
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { Link, useRouter } from 'expo-router';
-import { useAuthStore } from '../../store/authStore';
+import { Text, View } from 'react-native';
+import useAuthStore from '../../store/authStore';
 
 export default function Login() {
-  const signIn = useAuthStore((state) => state.signIn);
-  const router = useRouter();
+  const { loading } = useAuthStore();
 
-  const handleLogin = () => {
-    signIn();
-    router.replace('/home');
-  };
-
+  if (loading) return <Text>Loading...</Text>;
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Login Screen</Text>
-      <Button title="Login" onPress={handleLogin} />
-      <Link href="/signup">Go to Signup</Link>
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Text className="bg-blue-300 w-full text-center">LOGIN SCREEN</Text>
+      <Link href={'/profile' as Href}>Go to Profile</Link>
+      <SignInForm />
+      <Link href={'/register' as Href}>No Account? Sign up here</Link>
     </View>
   );
 }
