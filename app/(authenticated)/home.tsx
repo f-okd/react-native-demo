@@ -8,7 +8,6 @@ import { Session } from '@supabase/supabase-js';
 export default function Home() {
   const signOut = useAuthStore((state) => state.signOut);
   const router = useRouter();
-  
 
   const handleLogout = () => {
     signOut();
@@ -16,7 +15,7 @@ export default function Home() {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home Screen (Authenticated) </Text>
       <Link className="m-10 text-blue-600" href={'/profile' as Href}>
         Go to Profile

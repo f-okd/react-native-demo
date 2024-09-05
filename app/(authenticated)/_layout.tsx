@@ -1,21 +1,23 @@
-import { useUser } from "@/hooks/useUser";
-import useAuthStore from "@/store/authStore";
-import { Slot, useRouter } from 'expo-router';
-import { Text } from "react-native";
+import React, { useEffect } from 'react';
+import useAuthStore from '@/store/authStore';
+import { Redirect, Slot, useRouter } from 'expo-router';
+import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Layout() {
-  const router = useRouter()
-  const {session} = useAuthStore()
- 
-  if (!session?.user) {
-    router.replace("/login")
-    console.warn("NOT AUTHENTICATED")
+  const router = useRouter();
+  const { session, loading } = useAuthStore();
+
+  if (loading) {
+    return <Text>Loading...</Text>;
   }
-  
+
   return (
-    <>
-      <Text>Authenticated: {session?.user?.email ?? 'L'}</Text>
-      <Slot />
-    </>
+    <View style={{ borderColor: 'orange', borderWidth: 5, padding: 3 }}>
+      <Text>Authenticated: {session?.user.email}</Text>
+      <View style={{ borderWidth: 5, padding: 3, borderColor: 'red' }}>
+        <Slot />
+      </View>
+    </View>
   );
 }

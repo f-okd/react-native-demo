@@ -1,5 +1,5 @@
 import { Href, Redirect } from 'expo-router';
-import  useAuthStore from '../store/authStore';
+import useAuthStore from '../store/authStore';
 import { AppState } from 'react-native';
 import { supabase } from '@/lib/supabase/supabase';
 
@@ -22,5 +22,5 @@ export default function Index() {
     return <Redirect href="/home" />;
   }
 
-  return <Redirect href={"/login" as Href} />;
+  return <Redirect href={'/login' as Href} />;
 }

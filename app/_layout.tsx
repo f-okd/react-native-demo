@@ -1,20 +1,12 @@
-import { useUser } from '@/hooks/useUser';
-import useAuthStore from '@/store/authStore';
-import { Slot, useRouter } from 'expo-router';
+import { Slot } from 'expo-router';
+import React from 'react';
 import { Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function RootLayout() {
-  const router = useRouter();
-  const { session } = useAuthStore();
-
-  if (session?.user) {
-    router.replace('/home');
-  }
-
+export default function Layout() {
   return (
-    <>
-      <Text>Unauthenticated</Text>
+    <SafeAreaView style={{ borderColor: 'blue', borderWidth: 5, padding: 3 }}>
       <Slot />
-    </>
+    </SafeAreaView>
   );
 }

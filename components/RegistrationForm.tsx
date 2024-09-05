@@ -9,23 +9,23 @@ export default function RegistrationForm() {
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  
-  const {signUp, loading} = useAuthStore()
+
+  const { signUp, loading } = useAuthStore();
 
   async function handleSignUp() {
     if (!validator.isEmail(email)) {
-      console.warn("Invalid email")
-      return
+      console.warn('Invalid email');
+      return;
     }
-    if (!validator.isLength(username, {min:5, max:12})) {
-      console.warn("Username must be 5-12 characters long")
-      return
+    if (!validator.isLength(username, { min: 5, max: 12 })) {
+      console.warn('Username must be 5-12 characters long');
+      return;
     }
-    if (!validator.isLength(password, {min:6, max:20})) {
-      console.warn("Password must be 6-20 characters long")
-      return
+    if (!validator.isLength(password, { min: 6, max: 20 })) {
+      console.warn('Password must be 6-20 characters long');
+      return;
     }
-    await signUp({username,email,password});
+    await signUp({ username, email, password });
 
     router.replace('/home');
   }
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     padding: 12,
+    width: '90%',
   },
   verticallySpaced: {
     paddingTop: 4,
