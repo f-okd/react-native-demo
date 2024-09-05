@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
 import useAuthStore from '@/store/authStore';
-import { Redirect, Slot, useRouter } from 'expo-router';
+import { Redirect, Slot } from 'expo-router';
+import React from 'react';
 import { Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Layout() {
-  const router = useRouter();
   const { session, loading } = useAuthStore();
 
   if (loading) {
     return <Text>Loading...</Text>;
+  }
+
+  if (!session?.user){ 
+    return <Redirect href={"/login"}/>
   }
 
   return (

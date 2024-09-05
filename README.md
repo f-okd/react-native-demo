@@ -59,3 +59,5 @@ npm run reset-project
 ## Helpful resources
 https://supabase.com/docs/guides/auth/social-login/auth-google?queryGroups=platform&platform=react-native
 https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native?queryGroups=auth-store&auth-store=async-storage
+https://nikofischer.com/supabase-how-to-query-users-tableb
+[Creating triggers on auth table | Github Issue](https://github.com/orgs/supabase/discussions/21247)

@@ -1,12 +1,12 @@
-import {
-  ICredentials,
-  supabaseGetCurrentUser,
-  supabaseSignUp,
-  supabaseUpdateCurrentUser,
-} from '@/lib/supabase/apiAuth';
 import { supabase } from '@/lib/supabase/supabase';
 import { Session, User } from '@supabase/supabase-js';
 import { create } from 'zustand';
+
+interface ICredentials {
+  username?: string;
+  email: string;
+  password: string;
+}
 
 type AuthState = {
   user: User | null;
@@ -54,7 +54,8 @@ const useAuthStore = create<AuthState & AuthActions>((set) => ({
     set({ loading: true });
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.warn(error.message);
+      set({ loading: false });
+      console.warn(error);
     }
     set({ user: null, session: null, loading: false });
   },
@@ -74,6 +75,8 @@ const useAuthStore = create<AuthState & AuthActions>((set) => ({
     });
 
     if (error) {
+      console.warn(error);
+      set({ loading: false });
       throw new Error(error.message);
     }
     set({ user, session, loading: false });
@@ -89,8 +92,14 @@ const useAuthStore = create<AuthState & AuthActions>((set) => ({
       updateData = { data: { username } };
     }
 
-    const { data: {user}, error } = await supabase.auth.updateUser(updateData);
-    if (error) throw new Error(error.message);
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.updateUser(updateData);
+    if (error) {
+      set({ loading: false });
+      throw new Error(error.message);
+    }
 
     set({ user, loading: false });
   },
